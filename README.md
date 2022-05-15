@@ -9,7 +9,13 @@
 
 * Overview: https://minitorch.github.io/module0.html
 
+
+
 ## Fixed
 - `setup.cfg`: Change `[files]` in Line 5 to `[options]`(with `setptools==61.2.0`)
 - Pkgs: Uninstall `click==8.0.4` and install `click-8.0.4` to fix the runtime error of streamlit
 (AttributeError: module 'click' has no attribute 'get_os_args') 
+
+## Visualization
+
+<img height="600" src="./project/figures/vis.png" width="500"/>
