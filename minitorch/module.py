@@ -20,14 +20,16 @@ class Module:
         return self.__dict__["_modules"].values()
 
     def train(self):
-        "Set the mode of this module and all descendent modules to `train`."
-        # TODO: Implement for Task 0.4.
-        raise NotImplementedError('Need to implement for Task 0.4')
+        """Set the mode of this module and all descendent modules to `train`."""
+        self.training = True
+        for m in self.modules():
+            m.training = True
 
     def eval(self):
-        "Set the mode of this module and all descendent modules to `eval`."
-        # TODO: Implement for Task 0.4.
-        raise NotImplementedError('Need to implement for Task 0.4')
+        """Set the mode of this module and all descendent modules to `eval`."""
+        self.training = False
+        for m in self.modules():
+            m.training = False
 
     def named_parameters(self):
         """
@@ -37,13 +39,22 @@ class Module:
         Returns:
             list of pairs: Contains the name and :class:`Parameter` of each ancestor parameter.
         """
-        # TODO: Implement for Task 0.4.
-        raise NotImplementedError('Need to implement for Task 0.4')
+        named_params = {}
+        # the module params
+        for name, param in self._parameters.items():
+            named_params[name] = param
+        # descendents params
+        for module_name, module in self._modules.items():
+            module_items = module.named_parameters()
+            for param_name, param in module_items.items():
+                named_params[f"{module_name}.{param_name}"] = param
+        return named_params
 
     def parameters(self):
-        "Enumerate over all the parameters of this module and its descendents."
-        # TODO: Implement for Task 0.4.
-        raise NotImplementedError('Need to implement for Task 0.4')
+        """Enumerate over all the parameters of this module and its descendents."""
+        named_params = self.named_parameters()
+        params = [param for name, param in named_params.items()]
+        return params
 
     def add_parameter(self, k, v):
         """
@@ -126,7 +137,7 @@ class Parameter:
                 self.value.name = self.name
 
     def update(self, x):
-        "Update the parameter value."
+        """Update the parameter value."""
         self.value = x
         if hasattr(x, "requires_grad_"):
             self.value.requires_grad_(True)
