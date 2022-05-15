@@ -39,21 +39,19 @@ class Module:
         Returns:
             list of pairs: Contains the name and :class:`Parameter` of each ancestor parameter.
         """
-        named_params = {}
+        named_params = []
         # the module params
         for name, param in self._parameters.items():
-            named_params[name] = param
+            named_params.append((name, param))
         # descendents params
         for module_name, module in self._modules.items():
-            module_items = module.named_parameters()
-            for param_name, param in module_items.items():
-                named_params[f"{module_name}.{param_name}"] = param
+            for param_name, param in module.named_parameters():
+                named_params.append((f"{module_name}.{param_name}", param))
         return named_params
 
     def parameters(self):
         """Enumerate over all the parameters of this module and its descendents."""
-        named_params = self.named_parameters()
-        params = [param for name, param in named_params.items()]
+        params = [param for name, param in self.named_parameters()]
         return params
 
     def add_parameter(self, k, v):
