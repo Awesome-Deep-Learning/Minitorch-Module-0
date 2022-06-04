@@ -89,12 +89,9 @@ def relu(x):
     return x if x > 0 else 0
 
 
-EPS = 1e-6
-
-
 def log(x):
     """:math:`f(x) = log(x)`"""
-    return math.log(x + EPS)
+    return math.log(x)
 
 
 def exp(x):
@@ -104,17 +101,17 @@ def exp(x):
 
 def log_back(x, d):
     r"""If :math:`f = log` as above, compute d :math:`d \times f'(x)`"""
-    return d / (x + EPS)
+    return d / x
 
 
 def inv(x):
     """:math:`f(x) = 1/x`"""
-    return 1 / (x + EPS)
+    return 1 / x
 
 
 def inv_back(x, d):
     r"""If :math:`f(x) = 1/x` compute d :math:`d \times f'(x)`"""
-    return -d / (x ** 2 + EPS)
+    return -d / x ** 2
 
 
 def relu_back(x, d):
